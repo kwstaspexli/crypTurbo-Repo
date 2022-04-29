@@ -1,0 +1,7 @@
+export const ActionTypes = {
+  COINS: "COINS",
+  TRENDING: "TRENDING",
+  SINGLE_COIN: "SINGLE_COIN",
+  CURRENCY: "CURRENCY",
+  DAYS: "DAYS"
+};
