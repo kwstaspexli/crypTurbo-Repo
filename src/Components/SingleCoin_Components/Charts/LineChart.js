@@ -1,49 +1,53 @@
-import React,{useState} from "react"
+import React from "react"
 import { useSelector } from "react-redux"
 import { Line } from "react-chartjs-2"
-import { Chart as ChartJS } from "chart.js/auto"
+import "chart.js/auto" /* eslint-disable no-unused-vars */
 import CircularProgress from '@mui/material/CircularProgress';
-
-// https://www.chartjs.org/docs/latest/charts/line.html
-// https://www.chartjs.org/docs/latest/
-// line Styling
-
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 function LineChart({ chartData,flag }) {
 
-  const currency = useSelector((state) => state.currency.currency);
   const days = useSelector((state) => state.days.days);
+  const matches = useMediaQuery('(max-width:900px)');
 
   return (<div>
     {!chartData || flag===false ? (
-    <CircularProgress size="80px"/>
+    <CircularProgress size="55px"/>
   ) : (
   <Line
+  // height={`${matches ? "350px" : null}`}
+  width={`${matches ? "350px" : null}`}
   data={{
           labels: chartData.map((coin) => {
               let date = new Date(coin[0]);
               let time =  date.getHours() > 12
           ? `${date.getHours() - 12} PM`
           : `${date.getHours()} AM`;
-      return days === 1 ? time : date.toLocaleDateString();
+      return days === "1" ? time : date.toLocaleDateString();
       // 1 day -> show hours
       // more than one day -> show days
     }),
-
   datasets: [
       {
         data: chartData.map((coin) => coin[1]),
-        label: `Price ( Past ${days} Days ) in ${currency.name}`,
-        borderWidth: 4,
+        label: `Price ( Past ${days} Days )`,
+        borderWidth: `${matches ? "2" : "4"}`,
+        radius:`${matches ? "0" : "3"}`,
         borderColor: "#4d4dff",
         pointBorderWidth: 0,
-        pointHoverBorderWidth:5,
+        pointHoverBorderWidth:2,
         pointHoverBackgroundColor:"#8080ff",
 
       },
     ],
   }}
   options={{
+    aspectRatio:`${matches ? "2" : "3"}`,
+    elements: {
+      line: {
+        tension:`${matches ? "1" : "0"}`,
+      }
+    },
       plugins: {
           // title: {
           //     display: true,

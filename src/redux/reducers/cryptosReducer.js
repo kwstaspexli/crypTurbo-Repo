@@ -1,9 +1,10 @@
 import { ActionTypes } from "../actions/action-types";
 const intialState = {
   coins: [],
-  currency: {name:"EUR", symbol:"€"},
-  days: 1,
-  trending: []
+  currency: {label:"EURO", value:"eur", symbol:"€"},
+  days: "1",
+  trending: [],
+  coin_categories: []
 };
 
 export const coinsReducer = (state = intialState, { type, payload }) => {
@@ -50,6 +51,26 @@ export const singleCoinReducer = (state = {}, { type, payload }) => {
       return { ...state, ...payload };
     // case ActionTypes.REMOVE_SELECTED_CRYPTO:
     //   return {};
+    default:
+      return state;
+  }
+};
+
+export const singleCoinTickersReducer = (state = {}, { type, payload }) => {
+  switch (type) {
+    case ActionTypes.SINGLE_COIN_TICKERS:
+      return { ...state, ...payload };
+    // case ActionTypes.REMOVE_SELECTED_CRYPTO:
+    //   return {};
+    default:
+      return state;
+  }
+};
+
+export const singleCoinCategoriesReducer = (state = intialState, { type, payload }) => {
+  switch (type) {
+    case ActionTypes.SINGLE_COIN_CATEGORIES:
+      return { ...state, coin_categories: payload };
     default:
       return state;
   }

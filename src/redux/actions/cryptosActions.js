@@ -36,3 +36,17 @@ export const setSingleCoin = (coin) => {
     payload: coin,
   };
 };
+
+export const setSingleCoinTickers = (coin_tickers) => {
+  return {
+    type: ActionTypes.SINGLE_COIN_TICKERS,
+    payload: coin_tickers,
+  };
+};
+
+export const setSingleCoinCategories = (coin_categories) => {
+  return {
+    type: ActionTypes.SINGLE_COIN_CATEGORIES,
+    payload: coin_categories,
+  };
+};

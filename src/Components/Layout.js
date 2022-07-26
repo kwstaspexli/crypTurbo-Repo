@@ -14,11 +14,10 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
-import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
-import SubjectOutlinedIcon from '@mui/icons-material/SubjectOutlined';
 import ShowChartRoundedIcon from '@mui/icons-material/ShowChartRounded';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
+import CurrencyExchangeRoundedIcon from '@mui/icons-material/CurrencyExchangeRounded';
 // npm install @mui/icons-material
 
 
@@ -38,12 +37,13 @@ const drawerWidth = 300;
 
 const useStyles = makeStyles((theme) => {
   return {
-    page: {
+    mobileView: {
       background: '#f9f9f9',
       width: "100%",
-      padding: theme.spacing(2),
+      marginBottom: 300,
+      marginTop: 50,
     },
-    pagePC: {
+    pcView: {
       background: '#f9f9f9',
       width: `calc(100% - ${drawerWidth}px)`,
     },
@@ -58,24 +58,21 @@ const useStyles = makeStyles((theme) => {
     },
     title: {
       padding: theme.spacing(6),
-    },
-    toolbar: theme.mixins.toolbar,
-    avatar: {
-      marginLeft: theme.spacing(2)
-    }, 
+    }
   }
 });
 
-function Layout({ children }, props) {
+function Layout({ children }) {
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
 
-  const matches = useMediaQuery('(min-width:600px)');
   const [mobileOpen, setMobileOpen] = useState(false);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const matches = useMediaQuery('(min-width:600px)');
 
   const [MenuItem_current, SetMenuItem_current] = useState("");
   const handleClick = (e) =>{
@@ -84,19 +81,14 @@ function Layout({ children }, props) {
 
   const menuItems = [
     { 
-      text: 'My Notes', 
-      icon: <SubjectOutlinedIcon color="secondary" />, 
-      path: '/' 
-    },
-    { 
-      text: 'Create Note', 
-      icon: <CircleOutlinedIcon color="secondary" />, 
-      path: '/create' 
-    },
-    { 
       text: 'Trading', 
       icon: <ShowChartRoundedIcon color="secondary" />, 
       path: '/trading' 
+    },
+    { 
+      text: 'Exchanges', 
+      icon: <CurrencyExchangeRoundedIcon color="secondary" />, 
+      path: '/exchanges' 
     },
     { 
       text: 'Watchlist', 
@@ -112,12 +104,14 @@ function Layout({ children }, props) {
 
   const drawer = (<div>
         <Toolbar>
-          <Typography  variant="h4" sx={{ fontWeight: 'fontWeightBold' }} className={classes.title}>
+          <Typography  variant="h4" component="h1"
+           sx={{ fontWeight: 'fontWeightBold' }} 
+           className={classes.title}>
             CrypTurbo
           </Typography>
-          {mobileOpen ? <IconButton onClick={() =>{setMobileOpen(false);}}>
-                          <ArrowBackIosNewRoundedIcon color="secondary" />
-                        </IconButton>  : null }
+          {mobileOpen &&  <IconButton onClick={() =>{setMobileOpen(false);}}>
+                            <ArrowBackIosNewRoundedIcon color="secondary" />
+                          </IconButton> }
           </Toolbar>
 
         {/* links/list section */}
@@ -140,51 +134,43 @@ function Layout({ children }, props) {
 
   return (
     <div style={{display: "flex"}}>
-      {/* app bar */}
       <AppBar 
         position="fixed"
+        elevation={1}
+        color="primary"
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` }
-          //ml = marginLeft
+          left: { sm: `${drawerWidth}px` }
         }}
-        elevation={1}
-        //shadow
-        color="primary"
       >
         <Toolbar >
           <IconButton
             color="inherit"
-            aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={{ display: { sm: "none" } }}
+            // sm = small screens
           >
             <MenuIcon />
           </IconButton>
           <Typography>{MenuItem_current}</Typography>
-          <Avatar alt='logo1' className={classes.avatar} src="/logo192.png" />
-          {/* src from public folder */}
         </Toolbar>
       </AppBar>
 
-      {/* side drawer */}
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="crypTurbo nav List"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
             keepMounted: true, // Better open performance on mobile.
-            
           }}
           sx={{
-            display: { xs: "block", sm: "none" },
+            display: { 
+            xs: "block", sm: "none" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth
@@ -209,16 +195,12 @@ function Layout({ children }, props) {
       </Box>
       {/* main content */}
       {matches ?
-      <div className={classes.pagePC}>
-        <div className={classes.toolbar}>
+      <div className={classes.pcView}>
           { children }
-        </div>
       </div>
       :
-      <div className={classes.page}>
-        <div className={classes.toolbar}>
+      <div className={classes.mobileView}>
           { children }
-        </div>
       </div>}
   </div>
   );

@@ -1,8 +1,9 @@
-import React,{useState} from "react"
+import React,{useState} from "react";
+import { useSelector } from "react-redux";
 import Datagrid from "./Datagrid";
 import TextField from '@mui/material/TextField';
 import { Typography } from '@mui/material';
-import Currency from "./Currency";
+import CurrencyTab from "../../CurrencyTab";
 import { makeStyles } from '@mui/styles';
 
 
@@ -12,21 +13,22 @@ const useStyles = makeStyles((theme) => {
       display: 'flex',
       justifyContent: 'center',
       flexDirection: 'column',
-      padding: theme.spacing(2),
-      marginTop: '2%'
+      padding: theme.spacing(6),
     },
     header: {
       display: 'flex',
       justifyContent: 'space-between',
-      flexDirection: 'row',
+      flexWrap:"wrap",
+      gap:30
     }
   }
 });
 
-function SearchCoin({tableData}) {
+function DatagridSearch() {
 
     const classes = useStyles();
     const [search,setSearch] = useState("");
+    const tableData = useSelector((state) => state.coins.coins);
 
     const handleSearch = () => {
         return tableData.filter(
@@ -39,11 +41,14 @@ function SearchCoin({tableData}) {
     return ( 
     <div className={classes.page}>
     <div className={classes.header}>
-    <Typography variant="h4" sx={{ fontWeight: 'fontWeightBold' }}>Explore Assets</Typography>
-    <Currency />
+      <Typography variant="h4" component="h2"
+      sx={{ fontWeight: 'fontWeightBold' }}>
+        Explore Assets
+      </Typography>
+    <CurrencyTab />
     </div>
     <TextField placeholder="Search" 
-    sx={{ minWidth:120, width:180}}
+    sx={{ minWidth:120, width:200}}
     defaultValue="" 
     margin="dense" 
     onChange={(e) => setSearch(e.target.value)} />
@@ -52,4 +57,4 @@ function SearchCoin({tableData}) {
 
 }
 
-export default SearchCoin;
+export default DatagridSearch;

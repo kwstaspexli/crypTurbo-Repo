@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Box from '@mui/material/Box';
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -13,7 +13,7 @@ import ArrowUpwardRoundedIcon from '@mui/icons-material/ArrowUpwardRounded';
 import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
-import SelectDays from './SelectDays';
+import DaysSelect from '../Days/DaysSelect';
 
 
 
@@ -34,17 +34,17 @@ const useStyles = makeStyles((theme) => {
   }
 });
 
-function LineChartBox({chartData, flag, coin}) {
+function LineChartBox({chartData, flag}) {
 
     const classes = useStyles();
     const currency = useSelector((state) => state.currency.currency);
-    const days = useSelector((state) => state.days.days);
-    const matches = useMediaQuery('(min-width:400px)');
+    const coin = useSelector((state) => state.coin);
+    const matches = useMediaQuery('(min-width:800px)');
  
     const Chart = 
     Object.keys(coin).length === 0 ? (
         //without object.keys -> the coin.image.small wont show up
-        <CircularProgress size="55px" sx={{ display: 'flex', justifyContent:'center' }}/>
+        <CircularProgress size="55px" />
       ) : (
     <Card key={coin.id} sx={{ borderRadius:5,mb:1,mt:3} }>
       <CardHeader
@@ -59,49 +59,50 @@ function LineChartBox({chartData, flag, coin}) {
       <CardContent >
       {matches ?
             //box statistics
-            <Box sx={{display:"flex", margin: "-10px 20px 20px 20px", flexDirection:"row", justifyContent:"space-between"}}>
+            <Box sx={{display:"flex", margin: "-10px 10px 10px 10px", flexDirection:"row", justifyContent:"space-between"}}>
               <div style={{display:"flex", flexDirection:"row", justifyContent:"flex-start"}}>
-                      <Typography variant="h6" align="center" sx={{ fontWeight: 'fontWeightMedium' }}>
-                      {currency.symbol}{Number(coin.market_data.current_price[currency.name.toLowerCase()])}
+                      <Typography variant="h4" align="center" sx={{ fontWeight: 'fontWeightMedium' }}>
+                      {currency.symbol} {Number(coin.market_data.current_price[currency.value])}
                       </Typography>
                         <Typography component={'div'} sx={{ ml:"10px" }}>
                         {coin.price_change_percentage_24h > 0 ?
-                          <Typography variant="body1" className={classes.positive} align="center" sx={{ fontWeight: 'fontWeightBold' }}>
-                        <ArrowUpwardRoundedIcon />
-                        {`${Number(coin.market_data.price_change_percentage_24h_in_currency[currency.name.toLowerCase()]).toFixed(2)} %`}
+                          <Typography variant="h5" className={classes.positive} align="center" sx={{ fontWeight: 'fontWeightBold' }}>
+                        <ArrowUpwardRoundedIcon sx={{mt:1}}/>
+                        {`${Number(coin.market_data.price_change_percentage_24h_in_currency[currency.value]).toFixed(2)} %`}
                         </Typography>
-                      : <Typography variant="body1" className={classes.negative} align="center" sx={{ fontWeight: 'fontWeightBold' }}>
-                        <ArrowDownwardRoundedIcon />
-                        {`${Number(coin.market_data.price_change_percentage_24h_in_currency[currency.name.toLowerCase()]).toFixed(2)} %`}
+                      : <Typography variant="h5" className={classes.negative} align="center" sx={{ fontWeight: 'fontWeightBold' }}>
+                        <ArrowDownwardRoundedIcon sx={{mt:1}} />
+                        {`${Number(coin.market_data.price_change_percentage_24h_in_currency[currency.value]).toFixed(2)} %`}
                         </Typography>
                     }
                   </Typography> 
-                </div>      
-                  <SelectDays />
+                </div>  
+                    <DaysSelect />
               </Box>
               //select buttons 
         :
             //box statistics
-            <Box sx={{display:"flex", margin: "-10px 20px 20px 20px", flexDirection:"row", justifyContent:"space-between"}}>
+            <Box sx={{display:"flex", margin: "-15px 20px 80px 20px", flexDirection:"row", justifyContent:"space-between"}}>
               <div style={{display:"flex", flexDirection:"column", justifyContent:"flex-start"}}>
               <Typography variant="h6" align="center" sx={{ fontWeight: 'fontWeightMedium' }}>
-                {currency.symbol}{Number(coin.market_data.current_price[currency.name.toLowerCase()])}
+                {currency.symbol} {Number(coin.market_data.current_price[currency.value])}
                 </Typography>
 
                 <Typography component={'div'} sx={{ ml:"10px"}}>
                   {coin.price_change_percentage_24h > 0 ?
                     <Typography variant="body1" className={classes.positive} align="center" sx={{ fontWeight: 'fontWeightBold' }}>
                       <ArrowUpwardRoundedIcon />
-                      {`${Number(coin.market_data.price_change_percentage_24h_in_currency[currency.name.toLowerCase()]).toFixed(2)} %`}
+                      {`${Number(coin.market_data.price_change_percentage_24h_in_currency[currency.value]).toFixed(2)} %`}
                       </Typography>
                     : <Typography variant="body1" className={classes.negative} align="center" sx={{ fontWeight: 'fontWeightBold' }}>
                       <ArrowDownwardRoundedIcon />
-                      {`${Number(coin.market_data.price_change_percentage_24h_in_currency[currency.name.toLowerCase()]).toFixed(2)} %`}
+                      {`${Number(coin.market_data.price_change_percentage_24h_in_currency[currency.value]).toFixed(2)} %`}
                       </Typography>
                   }
                 </Typography>
+                    <DaysSelect />
                 </div>
-                <SelectDays />
+
               </Box>
               //select buttons 
         }

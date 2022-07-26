@@ -7,14 +7,7 @@ import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded';
 
 import { useHistory } from "react-router-dom";
 import UnfoldMoreIcon from "@mui/icons-material/UnfoldMore";
-
-
-// const CustomDataGrid = styled(DataGrid)(() => ({
-//   ".MuiDataGrid-iconButtonContainer": {
-//     visibility: "visible",
-//     width: "0 !important"
-//   }
-// }));
+import { Typography } from '@mui/material';
 
 function CustomUnsortedIcon() {
   return <UnfoldMoreIcon />
@@ -43,16 +36,16 @@ const Datagrid=({handleSearch}) =>{
       align: "left",
   
       renderCell: (params) => {
-        // console.log(params.row);
         return <>
                 {<Avatar alt={params.row.name} 
                 src ={params.row.image} 
                 sx={{ margin: "10px" }}
                 /> || ''}  
                 {params.row.name || ''} 
-                <p style={{color: "grey", marginLeft:"5px", fontWeight:"500"}}>
+                <Typography color="text.secondary" variant="body1"
+                 sx={{ marginLeft:"5px", fontWeight:"500"}}>
                   {params.row.symbol.toUpperCase() || ''}
-                </p>
+                </Typography>
                </>
       }   
     },
@@ -65,35 +58,35 @@ const Datagrid=({handleSearch}) =>{
       align: "center",
       type: 'number',
       valueFormatter: (params) => {
-        return `${currency.symbol}${params.value.toLocaleString()}`;
+        return `${currency.symbol} ${params.value}`;
       },
     },
     {
       field: 'price_change_percentage_24h',
-      headerName: '24H% PRICE CHANGE',
+      headerName: 'DAILY %',
       flex: 0.2,
       minWidth: 120,
       headerAlign: 'center',
       align: "center",
       renderCell: (params) => {
-        const valueFormatted = Number(params.value).toLocaleString();
+        const valueFormatted = Number(params.value);
         return (params.value > 0 ? 
-          <><ArrowUpwardRoundedIcon/>{`${valueFormatted}`}</>
-          : <><ArrowDownwardRoundedIcon/>{`${valueFormatted}`}</>);
+          <><ArrowUpwardRoundedIcon/>{`${valueFormatted} %`}</>
+          : <><ArrowDownwardRoundedIcon/>{`${valueFormatted} %`}</>);
       },
     },
     {
       field: 'price_change_percentage_7d_in_currency',
-      headerName: '7d% PRICE CHANGE',
+      headerName: 'WEEKLY %',
       flex: 0.2,
       minWidth: 120,
       headerAlign: 'center',
       align: "center",
       renderCell: (params) => {
-        const valueFormatted = Number(params.value).toLocaleString();
+        const valueFormatted = Number(params.value);
         return (params.value > 0 ? 
-          <><ArrowUpwardRoundedIcon/>{`${valueFormatted}`}</>
-          : <><ArrowDownwardRoundedIcon/>{`${valueFormatted}`}</>);
+          <><ArrowUpwardRoundedIcon/>{`${valueFormatted} %`}</>
+          : <><ArrowDownwardRoundedIcon/>{`${valueFormatted} %`}</>);
       },
     },
     {
@@ -104,7 +97,7 @@ const Datagrid=({handleSearch}) =>{
       headerAlign: 'center',
       align: "center",
       valueFormatter: (params) => {
-        return `${currency.symbol}${params.value.toLocaleString()}`;
+        return `${currency.symbol} ${params.value}`;
       },
     },
     {
@@ -115,7 +108,7 @@ const Datagrid=({handleSearch}) =>{
       headerAlign: 'center',
       align: "center",
       valueFormatter: (params) => {
-        return  `${currency.symbol}${params.value.toLocaleString()}`;
+        return  `${currency.symbol} ${params.value}`;
       },
     },
   ];
@@ -145,6 +138,8 @@ const Datagrid=({handleSearch}) =>{
         }}
 
         sx={{
+
+          // background: "#202020" for dark datagrid
           fontSize: 16,
           cursor: "pointer",
           '& .negative': {
